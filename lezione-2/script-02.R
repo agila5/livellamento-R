@@ -1,3 +1,7 @@
+###########################################################################
+################# Livellamento al Software R - Lezione 2 ##################
+###########################################################################
+
 # 1. Stringhe -------------------------------------------------------------
 
 # Il linguaggio R utilizza il tipo "character" per rappresentare internamente
@@ -482,6 +486,12 @@ dnorm(0.5, mean = 0, sd = 1) # uguale a 1/sqrt(2 * pi) * exp(0)
 # mentre le rimanenti lettere descrivono la variabile casuale (e.g. norm per la
 # Normale, pois per la Poisson, gamma per la Gamma, unif per l'Uniforme e cosi'
 # via).
+
+# ESERCIZIO: Dopo aver simulato un vettore x di n = 500 realizzazioni casuali
+# estratte da una v.c. Gamma(1, 2) (CONTROLLATE BENE LA PARAMETRIZZAZIONE USATA
+# DA R), si esegua il seguente comando
+summary(x)
+# e si commenti il risultato.
 
 # ESERCIZIO: Sia X ~ N(5, 5). Dopo aver consultato la pagina di help di ?qnorm e
 # aver capitolo la "parametrizzazione" utilizzata da R, si calcoli il quantile
