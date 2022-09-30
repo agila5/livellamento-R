@@ -4,7 +4,7 @@ Pagina web relativa al corso **Livellamento al Software R**.
 
 ## Breaking news
 
-... 
+(30/09/2022, ore 11.09): Al momento ho problemi ad aprire Webex tramite il pc di Ateneo. Proverò a risolvere il problema il prima possibile. Scusatemi per il disguido. 
 
 ## Collegamento pagina webex: 
 
