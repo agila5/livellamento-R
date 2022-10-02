@@ -4,7 +4,8 @@ Pagina web relativa al corso **Livellamento al Software R**.
 
 ## Breaking news
 
-(30/09/2022, ore 11.09): Al momento ho problemi ad aprire Webex tramite il pc di Ateneo. Proverò a risolvere il problema il prima possibile. Scusatemi per il disguido. 
+* (02/10/2022): Ho riorganizzato il materiale ed il programma del corso. 
+* (30/09/2022, ore 11.09): Al momento ho problemi ad aprire Webex tramite il pc di Ateneo. Proverò a risolvere il problema il prima possibile. Scusatemi per il disguido.
 
 ## Collegamento pagina webex: 
 
@@ -24,11 +25,10 @@ Il laboratorio 531 si trova nell'edificio U5: Via Roberto Cozzi, 55, 20125 Milan
 
 **Programma del corso**
 
-* **Lezione 1**: Introduzione ad R/Rstudio; le principali strutture dati. 
-* **Lezione 2**: Recycling; floating point arithmetic; i pacchetti R; stringhe; fattori; coercizione; matrici; liste; valori mancanti; funzioni di probabilità.
-* **Lezione 3**: Grafici di base; come definire nuove funzioni su R; le strutture di controllo (if, for, while, ...); breve introduzione alla famiglia *apply e i suoi parenti stretti.  
-* **Lezione 4**: Importare ed analizzare dataset esterni; strumenti di debugging. 
-* **Lezione 5**: Come fa R a stimare un modello lineare; riepilogo. 
+* **Lezione 1 e 2**: Introduzione ad R/Rstudio; le principali strutture dati; recycling; floating point arithmetic; i pacchetti R. 
+* **Lezione 3**: Stringhe; fattori; coercizione; matrici; subset-assignment; names; liste; valori mancanti. 
+* **Lezione 4**: Funzioni di probabilità (dnorm, runif, ...), grafici di base; come definire nuove funzioni su R. 
+* **Lezione 5**: Le strutture di controllo (if, for, while, ...); importare ed analizzare dataset esterni; esercizi di riepilogo. 
 
 **Riferimenti bibliografici**
 

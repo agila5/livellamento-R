@@ -2,503 +2,532 @@
 ################# Livellamento al Software R - Lezione 3 ##################
 ###########################################################################
 
-# 1. Grafici di base ------------------------------------------------------
+# 1. Stringhe -------------------------------------------------------------
 
-# 1.1 plot() --------------------------------------------------------------
+# Il linguaggio R utilizza il tipo "character" per rappresentare internamente
+# le stringhe di testo. Ad esempio:
+"ABC"
 
-# La funzione R piu' semplice (e, probabilmente, anche la piu' importante) per
-# creare un grafico e' plot(). Il suo comportamento dipende dalla "classe" degli
-# oggetti che vengono passati in input (vedi ?plot e sezione 2 di questo
-# script).
+# oppure
+'ABC'
 
-# Il primo grafico che andiamo a creare e' uno "scatter plot":
-x1 <- 1:10
-y1 <- 10:1
-plot(x1, y1)
+# Come mostrato sopra, le stringhe devono essere delimitate dai caratteri "
+# oppure '. Possiamo concatenare una o piu' stringhe di testo per creare un
+# vettore di tipo "character":
+x <- c("rosso", "verde", "giallo")
 
-# Vediamo che il grafico viene mostrato nella console denominata "Plots" la
-# quale, di default, e' nel pannello in basso a dx di Rstudio.
+# ma anche
+c("1", "2", "3") # i.e. anche i "numeri" li possiamo rappresentare come stringhe
 
-# Dalla pagina di help ?base::plot leggiamo quanto segue:
-# > For simple scatter plots, plot.default will be used.
+# oppure
+y <- c("come un peperone", "di rabbia", "d'invidia")
 
-# e, dalla pagina di help ?plot.default vediamo che la funzione accetta diversi
-# argomenti (descritti nella sezione Arguments) e diversi "graphical parameters"
-# (descritti nella sezione Details) per modificare ed aggiustare l'aspetto di un
-# grafico. Ad esempio:
-plot(x1, y1, col = "red", cex = 2, pch = 20, xlab = "Hi!", ylab = "", main = "My second plot!")
+# Sono gia' implementate diverse funzioni per manipolare vettori di tipo
+# character. Ad esempio:
 
-# Tipicamente, ogni volta che eseguiamo la funzione plot() viene generato un
-# grafico nuovo. Per aggiungere un "nuovo" insieme di punti ad un grafico
-# esistente possiamo usare la funzione "points()":
-x2 <- runif(100, min = 0, max = 10)
-y2 <- runif(100, min = 0, max = 10)
-points(x2, y2, col = "blue", cex = 2, pch = 20)
+nchar(x) # il numero di caratteri che compongono una stringa
+paste(x, y) # concatenazione di stringhe elemento per elemento.
+substring(x, 1, 2) # subsetting
+grep("giallo", x); grepl("giallo", x) # matching
+gsub("o", "*", x) # replacement
 
-# D'altro canto, se vogliamo rappresentare i due insiemi di punti in due grafici
-# distinti nello stesso pannello dobbiamo modificare il parametro "mfrow" (o
-# "mfcol"):
-old_par <- par(mfrow = c(2, 1)) # vogliamo una matrice di grafici con 1 riga e 2 colonne riempita per riga
-plot(x1, y1, type = "b", col = "red", cex = 2, pch = 20)
-plot(x2, y2, col = "blue", cex = 2, pch = 20)
+# Possiamo anche convertire una stringa di testo in maiuscolo/minuscolo
+toupper(x)
+tolower(toupper(x))
 
-# NB: la funzione layout() puo' essere utilizzata per definire layout grafici
-# molto piu' complessi di quelli creabili tramite "mfrow" e "mfcol". Se volete
-# leggere piu' dettagli, vi rimando alla pagina di help ed alla sezione 7.1.2 di
-# "The R Software".
+# Inoltre, il pacchetto R "tools" definisce una funzione chiamata "toTitleCase"
+# che permette di scrivere una stringa di testo come se fosse un titolo:
+library(tools)
+toTitleCase(x)
 
-# Per "cancellare" tutti i grafici salvati in memoria da Rstudio possiamo usare
-dev.off()
+# NB: Questa funziona e' ottimizzata per il testo scritto in inglese.
 
-# e, per resettare i vecchi parametri grafici:
-par(old_par)
+# La gestione delle stringhe di testo su R e' un argomento molto complesso ma,
+# data la natura del corso di livellamento, ci fermiamo qua. Alcune
+# precisazioni:
+#
+# - Per effettuare operazioni piu' articolate di quelle descritte in precedenza,
+# si e' soliti utilizzare espressioni chiamate "regex" (REGular EXpression):
+# pattern che descrivono le caratteristiche di una stringa testuale. Ad esempio,
+# il seguente comando serve per sostituire il primo carattere di una stringa di
+# testo con "*" a meno che questo carattere sia uguale ad "r".
+gsub("^[^r]{1}", "*", x)
 
-# 1.2 segments() e lines() ------------------------------------------------
+# Se volete approfondire l'argomento, vi suggerirei di consultare la
+# corrispondente pagina di help (?regex), il seguente capitolo
+# https://r4ds.had.co.nz/strings.html ed il seguente sito web:
+# https://regex101.com/
 
-# Le funzioni segments() e lines() possono essere usate per aggiungere linee e
-# segmenti ad un grafico gia' esistente. Ad esempio:
-plot(x2, y2, xlim = c(-0.25, 10.25), ylim = c(-0.25, 10.25), pch = 20)
-segments(
-  x0 = c(0,   0, 10, 10),
-  y0 = c(0,  10, 10,  0),
-  x1 = c(0,  10, 10,  0),
-  y1 = c(10, 10,  0,  0),
-  lwd = 2, # spessore della linea
-  col = 2, # Provate a leggere la sezione "Color Specification" in ?par
-  lty = 2 # tipologia di tratto
+# NB: Tranne che nei casi' piu' banali, la costruzione di una regex e' abbastanza
+# complessa: https://www.reddit.com/r/ProgrammerHumor/comments/lea26p/the_plural_of_regex_is_regrets/
+
+# - Le operazioni sulle stringhe di testo dipendono molto dalla lingua (e, piu'
+# in particolare, dal "locale") che viene utilizzato. Anche in questo caso vi
+# rimando a https://r4ds.had.co.nz/strings.html#locales
+
+# La funzione is.character() serve per testare se l'input e' un vettore di tipo
+# character.
+is.character(x)
+is.character(42L)
+
+# La funzione strsplit serve a dividere ogni elemento di un vettore di stringhe
+# rispetto ad un dato pattern:
+strsplit(y, " ")
+
+# L'output di questa funzione e' una lista, una delle strutture dati piu'
+# importanti di R che verra' introdotta in seguito.
+
+# ESERCIZIO: Dopo aver letto la help page relativa alla funzione startsWith(),
+# provate a
+# 1) Definire un vettore chiamato z "incollando" i vettori x ed y;
+# 2) Selezionare unicamente quegli elementi di z che
+#    a) cominciano per "r"
+#    b) finiscono per "o".
+
+# NB1: Devono essere soddisfatte entrambe le condizioni.
+# NB2: Come gia' visto durante la scorsa lezione, l'operatore "[" puo' essere
+# utilizzato per selezionare solamente alcuni elementi di un vettore.
+
+# ESERCIZIO: Dopo aver letto la pagina di help della funzione chartr() ed aver
+# testato qualcuno dei suoi esempi, provate a scrivere una espressione R per
+# convertire la stringa "ABBCDD" in "AbbCdd"
+
+# ESERCIZIO: Il linguaggio R definisce due costanti chiamate LETTERS e letters che
+# contengono tutte le lettere dell'alfabeto in maiuscolo e minuscolo:
+LETTERS
+
+# Come faccio a selezionare solo le prime 10 lettere?
+
+rm(list = ls())
+
+# 2. Fattori --------------------------------------------------------------
+
+# Il linguaggio R implementa una struttura dati chiamata "factor" che facilita
+# l'analisi di dati categoriali. I factor sono particolarmente utili per
+# rappresentare variabili che possono assumere solo una categoria tra un insieme
+# noto e finito di valori (e.g. il genere, la tipologia di impiego, il mese di
+# nascita, ...). I valori possono avere un ordinamento (e.g.le gerarchie in
+# ambito militare) oppure no (e.g. il colore dei capelli).
+
+# Per creare un oggetto factor possiamo usare la funzione omonima:
+elenco_giorni <- c(
+  "Lunedi", "Martedi", "Mercoledi", "Giovedi", "Venerdi", "Sabato", "Domenica"
 )
+factor(c("Lunedi", "Domenica"), levels = elenco_giorni)
 
-# NB: La funzione plot e' vettorizzata anche rispetto ai suoi parametri
-plot(x1, y1, col = 1:10, pch = 1:10, cex = 1:10 / 2, lwd = 3, xlab = "", ylab = "")
+# Se non specifico l'argomento "levels", allora essi vengono generati
+# automaticamente prendendo le stringhe univoche in input in ordine alfabetico.
+factor(c("Lunedi", "Domenica"))
 
-# oppure
-x3 <- seq(-5, 5, by = 0.1)
-plot(x3, sin(x3), type = "l", ylab = "", xlab = "x", lwd = 2, col = "red")
-lines(x3, cos(x3), lwd = 2, col = "blue")
+# Per specificare che i possibili valori sono definiti secondo una gerarchia,
+# posso usare l'argomento ordered:
+gradi_esercito <- c("soldato", "luogotenente", "capitano", "generale")
+x <- c("soldato", "soldato", "capitano")
+factor(x, levels = gradi_esercito, ordered = TRUE)
+
+#NB: La variabile month.abb (gia' salvata in memoria) continene il nome
+#abbreviato dei mesi dell'anno:
+month.abb
+
+# ESERCIZIO: La funzione table() serve a generare una tabella di frequenze
+# assolute per un dato vettore in input. Ad esempio:
+table(c("A", "B", "B"))
+
+# Dato il seguente vettore
+x <- c("Jan", "Jan", "Dec", "Mar")
+
+# 1. Si calcoli la tabella di frequenze assolute di x;
+# 2. Si definisca una nuova variabile chiamata z corrispondente alla
+# rappresentazione factor di x e specificando che l'argomento levels deve essere
+# pari a month.abb;
+# 3. Si calcoli la tabella di frequenze assolute di z. Che differenza c'e' tra i
+# due output mostrati in precedenza? E perche' questo potrebbe essere importante?
+# 4. Dato il seguente vettore
+y <- c("Mar", "May", "Jun", "Jul")
+
+# si calcoli la tabella a doppia entrata che rappresenta le frequenze assolute
+# congiunte delle due osservazioni (i.e. table(x, y)) e si commenti il
+# risultato.
+
+# APPROFONDIMENTO: La funzione marginSums() puo' essere utilizzata per calcolare
+# delle frequenze marginali data una tabella di contingenza bivariata.
+
+# 5. Cosa cambia se x ed y vengono specificati come factors i cui livelli sono
+# pari a month.abb?
+
+# 6. Come pensate si possa calcolare la matrice delle frequenze relative nel
+# caso univariato?
+
+# 7. La funzione cut() (?cut) serve per dividere una variabile numerica x in
+# livelli (i.e. un factor) dato un secondo vettore che rappresenta i "breaks".
+# Dopo aver definito un vettore x che contiene gli interi da 1 a 10, lo si
+# divida in due classi a piacere e se ne calcoli la tabella di frequenze
+# congiunte. Come sempre, in caso di problemi provate a consultare la pagina di
+# help.
 
 rm(list = ls())
 
-# 1.3 hist() and density() ------------------------------------------------
+# 3. Coercizione ----------------------------------------------------------
 
-# Le funzioni hist() e density() possono essere utilizzate per ricavare una
-# rappresentazione grafica che descrive l'andamento di una variabile numerica.
-# In particolare, hist() serve per calcolare e rappresentare un "istogramma"
-# dato un insieme di valori in input:
+# Come detto nella lezione precedente, in R un vettore non e' altro che una
+# sequenza di valori aventi lo stesso tipo. La funzione "c" serve per
+# concatenare gli elementi di un vettore. Ma cosa succede quando proviamo a
+# concatenare elementi di tipi diversi? Ad esempio, cosa restituisce il seguente
+# comando?
+c(FALSE, 1, "A")
+
+# Come riportato nella help page della funzione "c":
+
+# > The output type is determined from the highest type of the components in the
+# hierarchy:
+# ... < logical < integer < double < complex < character < list < ...
+
+# In altre parole, in R esiste una gerarchia tra i vari tipi ed ogni volta che
+# mischiamo tipi diversi, l'output viene trasformato secondo il tipo piu' in alto
+# nella gerarchia.
+
+# In R esistono diverse funzioni che permettono di effettuare una conversione
+# esplicita tra tipi diversi. Seguono tutte la sintassi "as.*tipo*". Ad esempio:
+as.numeric(c("1", "2", "3.14")) # numeric vuol dire double o integer
+as.integer(c("1", "2", "3.88"))
+
+# oppure
+as.character(c(pi, TRUE))
+
+# Nel caso in cui la conversione non sia opportunamente definita, R restituisce
+# un valore mancante (o NA, vedi sotto) ed un messaggio di warning:
+as.numeric("mela")
+
+# NB: L'operazione di coercizione tra valori logici e numeric viene effettuata
+# come segue:
+as.numeric(TRUE)  # TRUE  ---------------> 1
+as.numeric(FALSE) # FALSE ---------------> 0
+as.logical(0)     # 0 ---------------> FALSE
+as.logical(42)    # tutto il resto ---> TRUE
+
+# Per questo motivo,
+FALSE * TRUE + TRUE * 2 - FALSE * 10
+
+# ESERCIZIO: Dato il seguente vettore
+x <- c(FALSE, TRUE, log(1), 0)
+
+# cosa vi aspettate che restituiscano i seguenti comandi? Perche'?
+sum(x)
+min(x)
+prod(x + 1)
+
+rm(list = ls())
+
+# 5. Matrici --------------------------------------------------------------
+
+# Le matrici possono essere viste come una generalizzazione dei vettori in due
+# dimensioni. Come per i vettori, tutti gli elementi di una matrice devono
+# essere dello tesso tipo (applicando le regole viste prima sulla coercizione
+# tra elementi).
+
+# Per creare una matrice posso usare la funzione matrix:
+matrix(1:10)
+
+# Di default, R crea una matrice con n righe ed 1 colonna (dove n e' il numero di
+# elementi in input). Possiamo aggiustare questo aspetto tramite gli argomenti
+# nrow e ncol:
+matrix(1:10, nrow = 5, ncol = 2)
+
+# Nulla ci vieta di costruire una matrice di elementi di tipo logico:
+matrix(c(TRUE, FALSE), nrow = 5, ncol = 2)
+
+# NB: Il vettore in input (i.e. c(TRUE, FALSE)) e' stato duplicato fino a
+# raggiungere la lunghezza richiesta (i.e. 5 * 2 = 10 elementi). Notiamo inoltre
+# che, di default, la matrice viene "riempita" per colonna.
+
+# o character:
+matrix(letters[1:10], nrow = 5, ncol = 2, byrow = TRUE)
+
+# La funzione dim() puo' essere usata per ricavare le dimensioni di una matrice:
+(X <- matrix(1:9, 3, 3))
+dim(X)
+
+# Analogamente
+nrow(X); ncol(X)
+
+# L'operatore "[" puo' essere applicato anche alle matrici utilizzando una
+# sintassi simile a quella dei vettori. Il seguente comando estrae l'elemento in
+# prima riga e seconda colonna (iniziando a contare righe e colonne dalla
+# posizione in alto a sx):
+X[1, 2]
+X[1, ] # prima riga
+X[, c(2, 3)] # seconda e terza colonna
+
+# Vediamo inoltre che, di default, il subset di un singolo elemento o di una
+# singola riga/colonna restituisce un vettore e non piu' una matrice (lo si
+# riconosce dal modo in cui gli oggetti vengono stampati a schermo). Il
+# parametro "drop" serve a modificare questo comportamento:
+X[1, , drop = FALSE]
+
+# NB: In questo caso lo spazio tra le due virgole deve essere specificato.
+
+# Le operazioni matematiche viste in precedenza sono estensibili anche alle
+# matrici. Ad esempio:
+X <- matrix(1:4, nrow = 2, ncol = 2)
+Y <- diag(2) # matrice identita' di dimensione 2
+
+X + Y # somma elemento per elemento
+X + 1
+# NB: il vettore 1 e' implicitamente trasformato in una matrice avente dimensioni
+# opportune.
+
+X * Y # prodotto elemento per elemento
+X * 2 # vedi sopra
+
+# e, analogamente,
+X / (Y + 1)
+log(X)
+exp(X)
+sin(X)
+sign(Y)
+
+# Il prodotto matriciale XY e' implementato tramite l'operatore %*%:
+X %*% Y
+
+# Il software R implementa anche diverse altre operazioni:
+solve(X) # matrice inversa
+t(X) # matrice trasposta
+crossprod(X, Y) # prodotto incrociato: X'Y
+solve(X, Y) # rapporto X^-1 Y
+det(X) # determinante
+eigen(X) # scomposizione in autovalori/autovettori
+svd(X) # singular value decomposition
+qr(X) # QR decomposition
+
+# Le ultime 3 funzioni, i.e. eigen(), svd(), e qr() restituiscono in output una
+# lista (vedi sotto...).
+
+# APPROFONDIMENTO: Internamente R rappresenta le matrici come vettori a cui
+# associa un "attributo" chiamato "dim" avente lunghezza 2. Purtroppo non
+# possiamo entrare nel dettaglio di tali argomenti, ma vi invito a consultare le
+# pagine di help associate (i.e. ?attributes) e le references del corso
+# (
+# https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Getting-and-setting-attributes
+# e
+# https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Arrays-and-matrices
+# ).
+
+# ESERCIZIO:
+
+# 1. Si crei una matrice A contenente gli interi da 10 a 24 avente 5 righe, 3
+# colonne e valori inseriti per colonna.
+# 2. Si calcoli la somma per riga e per colonna di A (i.e. ?rowSums)
+# 3. Si calcoli la trasposta di A
+# 4. Si definisca una nuova matrice B di dimensioni opportune per calcolare il
+# prodotto AB (e si calcoli tale prodotto).
+
+rm(list = ls())
+
+# 6. Subset-assignment ----------------------------------------------------
+
+# Nelle lezioni precedenti abbiamo visto che l'operatore "[" puo' essere
+# utilizzato per estrarre le componenti di un vettore. Ad esempio:
+x <- 7:4
+x[c(1, 2)]
+x[-3]
+
+# La medesima operazione puo' essere compiuta utilizzando un vettore di valori
+# logici:
+x[c(TRUE, FALSE)] # subset + recycling
+
+# L'operatore "[" permette di effettuare molte altre operazioni. In particolare,
+# se ad un vettore x e' associato un insieme di nomi:
+y <- c("Andrea" = 29, "Marco" = 27)
+
+# possiamo selezionare gli elementi tramite tali nomi
+y["Andrea"]
+
+# Ripetendo gli indici di tipo numerico o nome, posso duplicare parti di un
+# vettore:
+x[c(1, 1, 1, 2, 2, 3)]
+y[c("Andrea", "Andrea")]
+
+# e, combinando gli operatori di subset (i.e. "[") e assignment (" <- ")
+# possiamo sostituire parti di un vettore. Questa operazione viene tipicamente
+# chiamata "subset assignment":
+x[1:2] <- c(10L, 9L)
+x
+
+# Quanto visto prima si applica anche in questo caso:
+x[1] <- "A" # coercizione implicita
+x
+
+# Le stesse operazioni le applico anche alle matrici con alcuni accorgimenti:
+X <- matrix(letters[1:9], 3, 3)
+X[c(1, 2), c(2, 3)] <- "Z" # righe 1 e 2; colonne 2 e 3
+X[1, 1] <- X[3, 3] <- "Q" # elementi (1, 1) e (3, 3)
+X
+
+rm(list = ls())
+
+# 7. Liste ----------------------------------------------------------------
+
+# Le liste rappresentano una generalizzazione del concetto di vettore in quanto
+# possono contenere elementi di tipo diverso. Sono chiamate anche strutture
+# "ricorsive" in quanto una lista puo' contenere anche un'altra lista:
+list(FALSE, 0L, pi, "ABC")
+list(list(1, 2), matrix(1:3))
+
+# La funzione str() e' molto utile per analizzare una lista e le sue componenti.
+x <- list(1, "A", matrix(1:4, 2, 2))
+str(x)
+
+# Il subset (e il subset-assignment) di liste funziona in maniera leggermente
+# diversa da quello per i vettori. In particolare:
+x[2]
+
+# restituisce UNA LISTA che contiene solamente il secondo elemento. D'altro
+# canto
+x[[2]]
+
+# estrae il secondo dalla lista.
+
+# Di conseguenza
+det(x[3])
+det(x[[3]])
+
+# Una spiegazione molto bella su questo argomento:
+# https://r4ds.had.co.nz/vectors.html#visualising-lists
+
+# Per eliminare un elemento da una lista posso assegnare NULL al corrispondente
+# valore.
+x[[1]] <- NULL
+str(x)
+
+# Anche gli elementi di una lista possono essere numerati
+(y <- list(a = 1, b = "U5"))
+
+# e posso utilizzare tali nomi per estrarre parti di una lista
+y$a
+
+# NB: Tantissime funzioni in R (e.g. lm()) restituiscono output di tipo lista.
+
+# ESERCIZIO: Sia X una matrice 2 x 2 che contiene gli interi da 1 a 4. Dopo aver
+# letto la pagina di help della funzione svd() (?svd) e averne studiato
+# l'output, si provi a ricostruire la matrice di input dati gli elementi
+# contenuti nella lista in output.
+
+rm(list = ls())
+
+# 8. Valori mancanti (NA e NaN) -------------------------------------------
+
+# In R si utilizza la costante NA (Not Available) per indicare un valore
+# mancante, indefinito o non specificato. Ad esempio:
+c("Andrea" = 29, "Marco" = 27, "Luca" = NA)
+
+# La funzione is.na() restituisce un vettore logico che identifica quali degli
+# elementi in input sono NA:
+x <- c(1, 2, NA)
+is.na(x)
+
+# NB: Non e' possibile confrontare NA(s) con l'operatore di uguaglianza logica:
+NA == NA
+
+# Perche'? NA rappresenta un placeholder per un valore non noto. Di conseguenza,
+# non potendo sapere se i due valori mancanti sono uguali o meno, R restituisce
+# NA.
+
+# Analogamente, la seguente operazione "non funziona":
+x == NA
+
+# ESERCIZIO: Gli NA in R tipicamente si propagano (nel senso che quasi tutte le
+# operazioni i cui input includono NA restituiscono NA). Ad esempio:
+x <- c(1, 2, NA)
+mean(x)
+
+# Provate a leggere la "help page" di ?mean per capire quale argomento e'
+# possibile specificare per alterare questo comportamento.
+
+# ESERCIZIO: Provate a spiegare l'output delle seguenti operazioni:
+TRUE | NA
+NA & FALSE
+
+# NB: Alcune operazioni matematiche possono anche restituire le costanti Inf e
+# -Inf:
+1 / 0
+(-2) / 0
+
+rm(list = ls())
+
+# 9. Funzioni di probabilita' ----------------------------------------------
+
+# Il software R implementa un insieme di funzioni aventi una sintassi comune per
+# gestire particolari variabili casuali. Ad esempio, se assumiamo che X
+# rappresenta una variabile casuale Gaussiana a media mu = 0 e deviazione
+# standard sigma = 1, il seguente comando genera n = 5 realizzazioni casuali da
+# X:
+rnorm(n = 5, mean = 0, sd = 1)
+
+# NB1: E' importante distinguere tra una variabile casuale e le sue
+# realizzazioni. Di conseguenza, nel precedente esempio, X rappresenta la
+# generica v.c. mentre rnorm estrae 5 realizzazioni aleatorie.
+
+# Per calcolare la CDF di X in un punto x, e.g. P(X <= 0), possiamo usare
+pnorm(0, mean = 0, sd = 1)
+
+# mentre qnorm calcola i quantili di X
+qnorm(0.975, mean = 0, sd = 1)
+
+# e dnorm i valori della funzione di densita'
+dnorm(0.5, mean = 0, sd = 1) # uguale a 1/sqrt(2 * pi) * exp(0)
+
+# Tutte queste funzioni seguono un pattern comune. La prima lettera identifica
+# l'obiettivo della funzione:
+# - d per la funzione di densita'
+# - p per calcolare la CDF
+# - q per calcolare i quantili
+# - r per generare numeri casuali (random)
+
+# mentre le rimanenti lettere descrivono la variabile casuale (e.g. norm per la
+# Normale, pois per la Poisson, gamma per la Gamma, unif per l'Uniforme e cosi'
+# via).
+
+# ESERCIZIO: Dopo aver simulato un vettore x di n = 500 realizzazioni casuali
+# estratte da una v.c. Gamma(1, 2) (CONTROLLATE BENE LA PARAMETRIZZAZIONE USATA
+# DA R), si esegua il seguente comando
+summary(x)
+# e si commenti il risultato.
+
+# ESERCIZIO: Sia X ~ N(5, 5). Dopo aver consultato la pagina di help di ?qnorm e
+# aver capitolo la "parametrizzazione" utilizzata da R, si calcoli il quantile
+# di ordine 0.7 di X.
+
+# ESERCIZIO: Sia X ~ Poisson(1). Si simuli l'estrazione di n = 100 osservazioni
+# da X e se ne calcoli la media. Dopo aver ripetuto questa operazioni diverse
+# volte, cosa possiamo concludere?
+
+# ESERCIZIO: Sia X1, ..., Xn un campione casuale da X, variabile casuale avente
+# media mu e varianza sigma2 finita. In maniera un poco informale, potremmo dire
+# che la Legge dei Grandi numeri afferma che la variabile casuale "media
+# campionaria" converge (in probabilita') a mu al divergere di n. Provate a
+# verificare empiricamente questo fatto simulando campioni di numerosita' sempre
+# maggiore da X ~ Uniforme(0, 10) e calcolandone la media.
+
+# NB: Come si puo' intuire dall'output delle precedenti funzioni, i comandi del
+# tipo r* restituiscono ogni volta una realizzazione casuale diversa. La
+# variabile casuale puo' rimanere invariata, ma le estrazioni da essa solo
+# aleatorie. Per garantire la riproducibilita' dei risultati tra sessioni o PC
+# diversi, potrebbe essere utile fissare un "seme" per garantire sempre le
+# stesse realizzazioni casuali:
+
+runif(1)
+runif(1)
+
 set.seed(1)
-x <- rnorm(n = 500)
-hist(x)
-
-# Tramite l'argomento "breaks" possiamo modificare il numero di "breakpoints"
-# utilizzati nella funzione:
-hist(x, breaks = 30)
-
-# Inoltre notiamo come, di default, la funzione crea un istogramma con i
-# conteggi di frequenze. Possiamo modificare questo aspetto tramite l'argomento
-# "freq":
-hist(x, breaks = 30, freq = FALSE)
-
-# La funzione density() serve per ricavare una stima non-parametrica di una
-# funzione di densita' f partendo da un campione di osservazioni X1, ..., Xn ed
-# uno stimatore kernel. In maniera molto informale, potremmo dire che density()
-# puo' essere usata per ottenere una versione lisciata di un istogramma di
-# frequenze. Senza soffermarci troppo sui dettagli teorici (che pero' sono molto
-# importanti, provate infatti a leggere ?density e alcune delle references li'
-# riportate), l'utilizzo e' piuttosto immediato.
-density(x)
-
-# L'output e' un po' criptico. Tuttavia, grazie alle "magiche" proprieta' della
-# funzione plot() possiamo rappresentarlo molto facilmente:
-plot(density(x))
-
-# Vediamo tra poco perche' e' possibile fare cio'. Per il momento, possiamo solo
-# notare graficamente la somiglianza tra l'istogramma e la stima di densita'
-# kernel. L'argomento di gran lunga piu' imporante di density() e' "bw" il quale
-# serve a specificare il "grado" di lisciamento desiderato. Ad esempio:
-plot(density(x, bw = 1))
-plot(density(x, bw = 0.1))
-
-# Anche la funzione lines() gode delle stesse proprieta' magiche di plot(). Per
-# questo motivo, possiamo sfruttarla per sovrapporre una stima di densita' non
-# parametrica all'istogramma di frequenze relative.
-hist(x, breaks = 30, col = "white", border = "darkred", freq = FALSE)
-lines(density(x), lwd = 2, col = grey(0.4), lty = 2)
-
-# 1.4 curve() -------------------------------------------------------------
-
-# La funzione curve serve per disegnare una funzione (nel senso che intende R) o
-# una espressione matematica del tipo x |-> f(x) specificata tramite il suo
-# primo argomento. Ad esempio:
-curve(expr = x ^ 3 - x ^ 2 - 3 * x, from = -2, to = 2.5)
-
-# oppure
-curve(dnorm, from = -3, to = 3)
-
-# Il grafico creato da curve() puo' essere personalizzato analogamente a quanto
-# visto prima:
-curve(
-  expr = x ^ 3 - x ^ 2 - 3 * x,
-  from = -2,
-  to = 2.5,
-  lwd = 2,
-  col = 2,
-  main = bquote(x^3 - x ^ 2 - 3 * x), # see ?plotmath
-  xlab = "",
-  ylab = "",
-  cex.axis = 1.25,
-  cex.main = 2,
-  lty = 2
-)
-
-# Concludiamo questa parte mostrando come si puo' calcolare la "Empirical
-# Cumulative Distribution Function" (ECDF, ?ecdf) dato un vettore numerico x in
-# input. In particolare, la ECDF e' una funzione F(t) costante a tratti che
-# calcola la percentuale di valori di x che calcola la percentuale di valori in
-# x che e' minore o uguale a t. Ad esempio:
-x <- c(1, 2, 3)
-plot(ecdf(x))
-
-# Nel seguente esempio proviamo a confrontare la ECDF per un campione casuale
-# normale di ampiezza n = 100 con il suo equivalente teorico (aggiunto alla
-# figure tramite curve()).
+runif(1)
 set.seed(1)
-x <- rnorm(100)
-plot(ecdf(x), cex = 0.1) # anche qua vediamo la "magia" di plot!
-curve(pnorm, add = TRUE, col = 2, lwd = 2) #NB: Notare add = TRUE
-
-# Chiaramente ci sono tantissimi argomenti che non abbiamo ancora coperto (le
-# palette di colori, la legenda, i parametri di par(), ...). Per tutto questo vi
-# rimando alle pagine di help e alla bibliografia suggerita.
-
-# ESERCIZIO: Dopo aver simulato un vettore x contenente n = 500 realizzazioni
-# iid da una v.c. N(0, 1), si rappresenti l'istogramma dei valori ottenuti
-# scegliendo un opportuno numero di bins.
-
-# ESERCIZIO: Si aggiunga al grafico precedente la funzione di densita' teorica
-# (in rosso) e la sua stima non parametrica ottenuta tramite il comando density
-# (in blu). Si commenti il risultato.
-
-rm(list = ls())
-
-# 2. class() --------------------------------------------------------------
-
-# Gli oggetti R possono avere dei "metadati" chiamati "attributi" che ne
-# descrivono le caratteristiche. Possiamo controllare gli attributi (non
-# intrinsechi) di un oggetto x tramite la funzione attributes(). Tutti gli
-# oggetti R hanno almeno due attributi: "length" (il numero di elementi) e
-# "mode" (che rappresenta una generalizzazione del concetto di "tipo" visto
-# nella prima lezione). Questi due attributi vengono denominati "attributi
-# intrinsechi" e non vengono restituiti da attributes(). Ad esempio:
-x <- c("A", "B", "C")
-length(x); mode(x)
-attributes(x)
-
-x <- list(list(list(1)))
-length(x); mode(x)
-attributes(x)
-
-# Molte altre tipologie di oggetti hanno degli attributi extra. Ad esempio:
-x <- matrix(1:9, 3, 3)
-length(x); mode(x)
-attributes(x)
-
-x <- factor(letters)
-length(x); mode(x)
-attributes(x)
-
-# La "classe" e' uno degli attributi piu' importanti in R poiche ci permette di
-# sfruttare la programmazione ad oggetti denominata S3. Ad esempio:
-x <- rnorm(100)
-my_hist <- hist(x, plot = FALSE)
-class(my_hist)
-
-my_density <- density(x)
-class(my_density)
-
-my_ecdf <- ecdf(x)
-class(my_ecdf)
-
-# 3. Pillole di S3 --------------------------------------------------------
-
-# Il linguaggio R implementa un sistema di programmazione ad oggetti molto
-# semplice denominato S3. Alla base di questo sistema giace un insieme di
-# funzioni chiamate "generic functions", i.e. funzioni il cui comportamento
-# varia in base alla classe degli oggetti che vengono passati in input.
-
-# Possiamo riconoscere che una funzione f e' una "generic functions" se ha un
-# costrutto di questo tipo:
-plot
-
-# L'istruzione 'UseMethod("plot")' ci permette di capire che plot e' una "generic
-# function". Di conseguenza, essa richiama un'altra funzione (solitamente
-# chiamata "method") in base alla classe del primo oggetto passato in input.
-# Possiamo elencare tutti i metodi associati ad una generic tramite la funzione
-# methods():
-methods("plot")
-
-# Vediamo che i methods hanno la forma: generic.class (e.g. plot.factor).
-
-# Di conseguenza, quando noi scriviamo plot(ecdf(x)), R implicitamente richiama
-# il metodo plot.ecdf(). Analogamente, l'istruzione plot(density(x)) richiama
-# plot.density() (e cosi' via...).
-
-# Possiamo consultare la definizione di un "method" come segue:
-getS3method("plot", "ecdf")
-
-rm(list = ls())
-
-# 4. Nuove funzioni su R!  ------------------------------------------------
-
-# Implementare nuove funzioni su R serve per ripetere lo stesso set di
-# operazioni piu' e piu' volte modificando unicamente gli oggetti in input.
-
-# Ad esempio, se volessimo calcolare la media potenziata di ordine r = 5 (i.e.
-# (1 / n * sum_i x_i ^ r) ^ 1/r) per un vettore tipo
-x <- 1:10
-
-# dovremmo implementare il seguente set di operazioni
-exp(log(mean(x ^ 5)) / 5)
-
-# Per calcolare la media potenziata di ordine r = 10:
-exp(log(mean(x ^ 10)) / 10)
-
-# Abbiamo ripetuto le stesse operazioni cambiando unicamente il numero associato
-# ad r. Queste ripetizioni aumentano le probabilita' di errori quando copiamo ed
-# incolliamo il codice tra un set di operazioni e l'altro. Inoltre, nel caso in
-# cui decidessimo di modificare l'algoritmo sottostante, dovremmo modificarlo
-# manualmente in tutte le parti dello script (il che aumenta nuovamente la
-# probabilita' di commettere errori). Di conseguenza, potrebbe essere conveniente
-# definire una nuova funzione come segue:
-powered_mean <- function(x, r = 1) {
-  exp(log(mean(x ^ r)) / r)
-}
-
-# ed eseguirla modificando solo il valore associato ad r
-powered_mean(x, r = 5)
-powered_mean(x, r = 10)
-
-# Per creare una nuova funzione si utilizza la seguente sintassi:
-
-# name <- function(list or arguments) {
-#   body of the function
-# }
-
-# In particolare:
-
-# - Il nome della funzione segue le stesse regole dell'assegnazione viste in
-# precedenza.
-# - Il body della funzione e' una sequenza di istruzioni R (e, eventualmente,
-# commenti);
-# - Gli argomenti della funzione vengono identificati tramite il loro nome (che
-# deve essere univoco). Uno, alcuni o tutti gli argomenti possono avere un
-# valore di default (che verra' usato nel caso in cui l'utente non specifichi
-# nulla quando richiama tale funzione). Nel caso precedente, x non ha un
-# valore di default, r si'.
-
-# Se eseguiamo il nome di una funzione senza le parentesi, R stampa a schermo il
-# "body":
-powered_mean
-
-# ESERCIZIO: Provate a definire una funzione f la quale, dato un vettore
-# numerico in input, restituisce una lista contenente la media, la varianza, il
-# minimo ed il massimo di tale vettore. Assegnate un nome opportuno agli
-# elementi della lista.
-
-# 4.2 Return value --------------------------------------------------------
-
-# Ogni funzione R restituisce un valore in output (in maniera implicita od
-# esplicita). Possiamo definire degli output espliciti tramite la funzione
-# return(). Ad esempio:
-test_return <- function(x, y) {
-  out <- list(x = x, y = y, z = x + y)
-  return(out)
-}
-
-test_return(1, 2)
-
-# Se R raggiunge la fine delle istruzioni incluse nel body senza aver incontrato
-# nessuna istruzione di return, allora egli restituisce l'ultimo oggetto
-# valutato. Ad esempio:
-test_return_2 <- function(x, y) {
-  list(x = x, y = y, z = x + y)
-}
-test_return_2(1, 2)
-
-# La funzione test_return_2 e' identica a test_return. Per questo motivo, in R il
-# return esplicito viene utilizzato unicamente per implementare un comportamento
-# denominato "early return" (vedremo esempi piu' avanti).
-
-# ESERCIZIO: Supponiamo che X1, ..., Xn sia un campione casuale estratto da una
-# popolazione X ~ Poisson(lambda). Si implementi una funzione che, dati in input
-# un vettore numerico x ed una stima per lambda, restituisce il valore della
-# funzione di verosimiglianza.
-
-# ESERCIZIO (AVANZATO): Dato il seguente campione casuale,
-x <- rpois(n = 100, lambda = 2)
-# si rappresenti la funzione di verosimiglianza calcolata al punto precedente
-# fissando un opportuno range di valori per lambda. Suggerimento: consultare
-# l'help della funzione "curve()" per capire come rappresentare funzioni
-# definite ad-hoc.
-
-# ESERCIZIO: Supponiamo che X1, ..., X100 sia un campione casuale estratto da
-# una popolazione X ~ N(mu, 1). Si implementi una funzione che, dato in input un
-# valore mu0, permetta di calcolare il pvalue del test
-#                        H0: mu = mu0 vs H1: mu > mu0.
-
-rm(list = ls())
-
-# 4.3 Lexical scoping (avanzato) ------------------------------------------
-
-# Ma cosa succede quando eseguiamo una funzione che modifica una variabile
-# avente lo stesso nome di un'altra variabile nel global environment? Ad
-# esempio:
-x <- 5
-my_sum1 <- function(x) {
-  x <- x + 1
-  x
-}
-my_sum1(x)
-x # ????
-
-# Questo succede perche' le variabili definite dentro ad una funzione "nascono e
-# muoiono" dentro a quella funzione e non vanno ad intaccare l'ambiente esterno.
-
-# Cosa succede invece quando una funzione richiama una variabile non definita
-# in quella stessa funzione?
-my_c <- function(x) {
-  c(x, y) # y non e' tra gli argomenti di my_c
-}
-
-my_c(1)
-
-# Tuttavia
-y <- 2
-my_c(1)
-
-# R non trova y tra gli argomenti di y e, come ultima risorsa prima di
-# restituire un messaggio di errore, controlla anche se y "esiste" nel global
-# enviroment.
-
-# NB: Questo e' un comportamento che puo' avere conseguenza estremamente difficili
-# da prevedere ed errori difficili da diagnosticare. E' sempre meglio essere
-# ESPLICITI elencando tutti gli argomenti di cui necessita una funzione.
-
-rm(list = ls())
-
-# 5. Le strutture di controllo --------------------------------------------
-
-# Le strutture di controllo servono per modificare il flusso di esecuzione di
-# uno script o una funzione. Le piu' comuni sono:
-
-# - if/else (per testare una condizione);
-# - for (per eseguire un ciclo di operazioni);
-# - while (per eseguire la stessa operazioni piu' volte fino a che un test non viene valutato a FALSE)
-
-# Meno comuni:
-# - repeat (esegue un loop all'infinito);
-# - break (interrompe un loop);
-# - next (salta una iterazione di un loop).
-
-# 5.1 if and if/else ------------------------------------------------------
-
-# Una istruzione del tipo if o if/else puo' essere usata nel seguente modo:
-
-# if (TEST) {
-#   do - something
-# }
-
-# if (TEST) {
-#   do - something
-# } else {
-#   in any other case, do something else
-# }
-
-# Per esempio:
-x <- runif(1)
-y <- runif(1)
-if (x < y) {print("x e' piu' piccolo di y!")}
-if (x < y) {print("x e' piu' piccolo di y!")} else {print("x e' piu' grande di y!")}
-
-# NB: Il TEST utilizzato per valutare una "if" clause deve necessariamente
-# essere un vettore logico di lunghezza 1, pena un errore o un messaggio di
-# warning:
-if (c(TRUE, FALSE)) {print("AIUTO")}
-
-# ESERCIZIO: La congettura di Collatz afferma che, dato un qualsiasi numero
-# naturale n, applicando il seguente algoritmo:
-# a) se n e' pari lo divido per 2;
-# b) se n e' dispari lo moltiplico per 3 ed aggiungo 1;
-# allora la successione di elementi arrivera' sempre a raggiungere il numero 1.
-
-# Si implementi una funzione che, dato in input un numero naturale n, calcola il
-# suo successivo tramite l'algoritmo della congettura di Collatz.
-
-rm(list = ls())
-
-# La struttura di controllo "if" puo' essere implementata in una funzione per
-# testare una condizione ed, eventualmente, restituire un messaggio di errore.
-# Ad esempio:
-test_positive <- function(x) {
-  if (any(x < 0)) {
-    stop("Almeno un elemento di x e' negativo", call. = FALSE)
-  }
-  x
-}
-test_positive(-1:1)
-test_positive(1:10)
-
-# oppure
-
-# ESERCIZIO: Una variabile casuale X segue una distribuzione "triangolare"
-# (https://en.wikipedia.org/wiki/Triangular_distribution) di parametri
-# a <= b <= c se la sua funzione di densita' e' esprimibile nel seguente modo:
-# f(x) =
-# 0 se x < a;
-# 2(x - a) / ((b - a)(c - a)) se a <= x < c
-# 2 / (b - a)  se x = c
-# 2(b - x) / ((b - a)(b - c)) se c < x <= b
-# 0 se b < x
-
-# Si implementi una funzione dtriangular(x, a, b, c) che permette di calcolare
-# tale fdd dati un insieme di valori a, b, e c scelti da voi.
-
-# 5.2 Cicli for -----------------------------------------------------------
-
-# Un ciclo for puo' essere implementato utilizzando il seguente costrutto:
-
-# for (sequenza di indici o elemento) {
-#   corpo del ciclo
-# }
-
-# Ad esempio:
-for (i in 1:10) {
-  print(i ^ 2) # NB: E' importante esplicitare il print
-}
-
-# Oppure
-x <- rnorm(10)
-for (i in seq_along(x)) {
-  temp <- x[i]
-  msg <- paste0(
-    "x e' pari a ", round(temp, 2),
-    "; x quadro e' pari a ", round(temp ^ 2, 2)
-  )
-  print(msg)
-}
-
-# NB: seq_along crea una sequenza di indici lunga tanto quanto il vettore in input
-
-# ESERCIZIO: Provate ad implementare un ciclo for che stampa a schermo le lyrics
-# della famosa canzone "99 bottles of beer on the wall":
-# http://www.99-bottles-of-beer.net/
-
-# ESERCIZIO: Provate ad implementare il celebre algoritmo "fizzbuzz". Tale
-# algoritmo chiede di ciclare su un vettore numerico in input (i.e. x) e restituire un
-# secondo vettore (i.e. y) in cui:
-# - se l'input in posizione i e' multiplo di 3, allora y[i] deve essere pari a "fizz";
-# - se l'input in posizione i e' multiplo di 5, allora y[i] deve essere pari a "buzz";
-# - se l'input in posizione i e' multiplo di 3 E 5, allora y[i] deve essere pari a "fizzbuzz";
-# - altrimenti, y[i] deve essere pari a x[i].
-
-# NB: E' importante PREALLOCARE un vettore y utilizzato in un ciclo for invece
-# che farlo crescere ogni volta che lo manipolate.
-
+runif(1)
+
+# La generazione di estrazioni casuali da una variabile casuale e' un argomento
+# molto interessante e complesso. Purtroppo non possiamo aggiungere dettagli
+# ulteriori, ma vi invito a consultare il libro "The R Software" se volete
+# leggere ulteriori dettagli.
+
+# Per concludere riportiamo una citazione secondo me molto divertente:
+# "The generation of random numbers is too important to be left to chance."
+# — Robert R. Coveyou
