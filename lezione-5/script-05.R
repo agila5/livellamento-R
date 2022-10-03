@@ -58,10 +58,10 @@ if (x < y) {
 # numero naturale n (i.e. un integer positivo) di lunghezza 1, restituisce il
 # successivo secondo l'algoritmo definito della congettura di Collatz. Ad
 # esempio, my_collatz(4) deve restituire 2, my_collatz(5) deve restituire 16 e
-# così via.
+# cosi' via.
 
-# Suggerimento: Controllate ?"Arithmetic" per capire quale operatore può essere
-# usato per determinare se un numero n è pari a dispari.
+# Suggerimento: Controllate ?"Arithmetic" per capire quale operatore puo' essere
+# usato per determinare se un numero n e' pari a dispari.
 
 # La struttura di controllo "if" puo' essere aggiunta ad una funzione f per
 # testare una condizione ed, eventualmente, restituire un messaggio di errore.
@@ -91,7 +91,7 @@ my_empty_collatz(c(1, 2))
 my_empty_collatz(1.5)
 my_empty_collatz(-2)
 
-# Questo "pattern" è molto utile per verificare che i valori passati agli
+# Questo "pattern" e' molto utile per verificare che i valori passati agli
 # argomenti di una funzione rispettano un insieme di ipotesi riguardanti il loro
 # campo di variazione.
 
@@ -122,13 +122,13 @@ if (c(TRUE, FALSE)) {
   print("AIUTO")
 }
 
-# La funzione ifelse può essere utilizzata per sostituire parti di un vettore
+# La funzione ifelse puo' essere utilizzata per sostituire parti di un vettore
 # secondo un test logico:
 (x <- rnorm(10))
 ifelse(x < 0, abs(x), x)
 
-# Tuttavia, la funzione ifelse presenta alcune peculiarità (i.e. rimuove gli
-# attributes da x). Di conseguenza, è preferibile usare un costrutto di questo
+# Tuttavia, la funzione ifelse presenta alcune peculiarita' (i.e. rimuove gli
+# attributes da x). Di conseguenza, e' preferibile usare un costrutto di questo
 # tipo:
 (x <- rnorm(10))
 x[x < 0] <- abs(x[x < 0 ])
@@ -143,7 +143,7 @@ x[x < 0] <- abs(x[x < 0 ])
 
 # Ad esempio:
 for (i in 1:10) {
-  print(i ^ 2) # NB: In un ciclo for è necessario esplicitare il print
+  print(i ^ 2) # NB: In un ciclo for e' necessario esplicitare il print
 }
 
 # Oppure
@@ -161,7 +161,7 @@ for (i in seq_along(x)) {
 # NB: seq_along crea una sequenza di indici lunga tanto quanto il vettore in input
 
 # NB: Una volta che noi creiamo ed eseguiamo un ciclo for, la variabile rispetto
-# a cui cicliamo non può essere modificata. Ad esempio:
+# a cui cicliamo non puo' essere modificata. Ad esempio:
 for (i in 1:10) {
   print(i)
   i <- i + 1
@@ -182,10 +182,10 @@ for (i in 1:10) {
 rm(list = ls())
 
 # NB: Nel caso in cui il ciclo for richieda di modificare ad ogni iterazioni gli
-# elementi di un vettore y, è importante (dal punto di vista computazione)
+# elementi di un vettore y, e' importante (dal punto di vista computazione)
 # pre-allocare tutti gli elementi di tale vettore y.
 
-# Ad esempio, il seguente codice può essere utilizzato per generare una
+# Ad esempio, il seguente codice puo' essere utilizzato per generare una
 # realizzazione di un processo chiamato Random Walk (RW) (o, anche, Passeggiata
 # Aleatoria).
 
@@ -199,7 +199,7 @@ for (i in 2:n) {
 # l'andamento di y. Ripetete la simulazione diverse volte per vedere diverse
 # realizzazioni di un processo RW.
 
-# Quanto mostrato sopra è estremamente più efficiente della seguente operazione
+# Quanto mostrato sopra e' estremamente piu' efficiente della seguente operazione
 y2 <- 0
 for (i in 2:n) {
   y2 <- c(y2, y2[i - 1] + rnorm(1))
@@ -209,7 +209,7 @@ for (i in 2:n) {
 # i due approcci appena mostrati ed a confrontarne i tempi di esecuzione
 # (?system.time) per diversi valori di n.
 
-# Purtroppo ciò non è sempre possibile...
+# Purtroppo cio' non e' sempre possibile...
 
 # ESERCIZIO: Provate a sviluppare una funzione (e.g. my_collatz_sequence) che,
 # dato in input un numero naturale n, restituisce in output un vettore
@@ -231,13 +231,13 @@ rm(list = ls())
 
 # R utilizza un oggetto chiamato "data.frame" (i.e. di classe "data.frame") per
 # rappresentare le matrici dei dati. Le righe di un data.frame corrispondono
-# alle unità statistiche (i.e. le osservazioni) e le colonne alle variabili.
+# alle unita' statistiche (i.e. le osservazioni) e le colonne alle variabili.
 
-# Il software contiene già salvati in memoria alcuni dataframe(s):
+# Il software contiene gia' salvati in memoria alcuni dataframe(s):
 iris
 class(iris)
 
-# In questi casi, è sempre utile leggere la pagina di help associata
+# In questi casi, e' sempre utile leggere la pagina di help associata
 # all'oggetto:
 ?iris
 
@@ -252,7 +252,7 @@ data(package = "cluster")
 str(iris) # Controllate bene la descrizione delle variabili
 length(iris) # Il numero di elementi della lista
 
-# Analogamente, per estrarre una o più colonne del data.frame (i.e. gli elementi
+# Analogamente, per estrarre una o piu' colonne del data.frame (i.e. gli elementi
 # dalla lista) possiamo usare la sintassi nota:
 iris$Sepal.Length # output: vettore
 iris[["Sepal.Length"]] # output: vettore
@@ -267,14 +267,14 @@ iris[1, 3] # prima riga e terza colonna
 iris[1, "Petal.Length", drop = FALSE]
 nrow(iris); ncol(iris)
 
-# ESERCIZIO: Cosa restituiscono i seguenti comandi? Perchè?
+# ESERCIZIO: Cosa restituiscono i seguenti comandi? Perche'?
 iris[1]
 iris[[1]]
 iris[, 1]
 
 # 2.1 Importare dataset esterni -------------------------------------------
 
-# La funzione read.table (e affini, vedi ?read.table) può essere usata per
+# La funzione read.table (e affini, vedi ?read.table) puo' essere usata per
 # importare un dataset esterno. Ad esempio:
 small_flights <- read.table(
   file = "lezione-5/small-flights.csv",
@@ -282,14 +282,14 @@ small_flights <- read.table(
   sep = ","
 )
 
-# NB1: Il tab "Import Dataset" di Rstudio nella scheda Environment può essere
-# utilizzato per importare i dataset più semplici.
+# NB1: Il tab "Import Dataset" di Rstudio nella scheda Environment puo' essere
+# utilizzato per importare i dataset piu' semplici.
 
 # NB2: Potete modificare la directory dove R lavora tramite il comando setwd().
-# Per un approccio alternativo ed un utilizzo più avanzato, vi suggerisco di
+# Per un approccio alternativo ed un utilizzo piu' avanzato, vi suggerisco di
 # consultare https://rstats.wtf/index.html.
 
-# NB3: Il file small_flights.csv è stato estratto da un dataset contenuto nel
+# NB3: Il file small_flights.csv e' stato estratto da un dataset contenuto nel
 # pacchetto R nycflights13. Proviamo a consultarne la documentazione:
 
 #  install.packages("nycflights13")
@@ -321,13 +321,13 @@ small_flights[, c("carrier", "flight", "tailnum")]
 # oppure
 subset(small_flights, select = c("carrier", "flight", "tailnum"))
 
-# Quali voli hanno accumulato più ritardo?
+# Quali voli hanno accumulato piu' ritardo?
 idx <- order(small_flights[["arr_delay"]], decreasing = TRUE)
 head(small_flights[idx, ])
 
 # E se volessimo aggiungere altre variabili? Ad esempio, potremmo voler
 # convertire "dep_time" in una stringa di testo che descrive l'orario in maniera
-# più leggibile.
+# piu' leggibile.
 small_flights$hour_dep_time <- small_flights$dep_time %/% 100
 small_flights$hour_dep_time <- sprintf("%02d", small_flights$hour_dep_time)
 small_flights$minute_dep_time <- small_flights$dep_time %% 100
