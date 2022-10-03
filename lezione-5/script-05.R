@@ -347,4 +347,5 @@ head(small_flights[, c("dep_time", "string_dep_time")])
 # https://bookdown.org/yihui/rmarkdown/ (R Markdown!)
 # https://geocompr.robinlovelace.net/ (dati spaziali)
 # https://otexts.com/fpp3/ (time series)
+# http://madrury.github.io/jekyll/update/statistics/2016/07/20/lm-in-R.html (lm su R, mooolto interessante)
 
