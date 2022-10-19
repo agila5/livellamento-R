@@ -4,6 +4,7 @@ Pagina web relativa al corso **Livellamento al Software R**.
 
 ## Breaking news
 
+* (19/10/2022): Corretto un typo nel testo dell'esercizio 4 dell'esame. 
 * (05/10/2022): Ho aggiunto il testo dell'esame. Scadenza per la consegna: 23:59 del 23 Ottobre 2022. Consultate il file chiamato `esame.pdf` per maggiori informazioni.   
 * (02/10/2022): Ho riorganizzato il materiale ed il programma del corso. 
 * (30/09/2022, ore 11.09): Al momento ho problemi ad aprire Webex tramite il pc di Ateneo. Proverò a risolvere il problema il prima possibile. Scusatemi per il disguido.
